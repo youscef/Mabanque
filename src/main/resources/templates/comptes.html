@@ -50,7 +50,7 @@
                     <label th:text="${compte.taux}"></label>
                 </div>
             </div>
-          </div>
+        </div>
         <div class="panel panel-primary" th:if="${exception}">
             <div class="panel-heading">Exception</div>
             <div class="panel-body">
@@ -63,20 +63,51 @@
         <div class="panel panel-primary" th:if="${compte}">
             <div class="panel-heading">Operation sur le compte</div>
             <div class="panel-body">
+                <form th:action="@{/saveOperation}" method="post">
+                    <div>
+                        <label>Compte:</label>
+                        <input type="hidden" name="codeCompte" value="${codeCompte}"/>
+                        <label th:text="${compte.codeCompte}"></label>
+                    </div>
+                    <div>
+                        <label>Retrait</label>
+                        <input type="radio" name="typeOperation" value="Ret"
+                        onchange="document.getElementById('forVir').style.display='non'"/>
+                        <label>Versement</label>
+                        <input type="radio" name="typeOperation" value="Vers"
+                               onchange="document.getElementById('forVir').style.display='non'"/>
+                        <label>Virement</label>
+                        <input type="radio" name="typeOperation" value="Vir"
+                               onchange="document.getElementById('forVir').style.display='block'"/>
+                    </div>
+                  <div id="forVi" style="display:non">
+                        <label>Vers</label>
+                        <input type="text" name="codeCompte2"/>
+                    </div>
 
+                    <div>
+                        <label>Montant</label>
+                        <input type="text" name="montant"/>
+                    </div>
+                    <div>
+                        <button type="submit" class="btn btn-primary">save</button>
+                    </div>
+
+
+                </form>
             </div>
 
         </div>
         <div class="panel panel-primary" th:if="${compte}">
             <div class="panel-heading">Liste des operations sur le compte</div>
             <div class="panel-body">
-                <table>
+                <table class="table table-striped">
                     <thead>
                     <tr>
                         <th>Numero operation</th>
                         <th>Type operation</th>
                         <th>Date operation</th>
-                        <th>montant </th>
+                        <th>montant</th>
                     </tr>
                     </thead>
                     <tbody th:each="list :${listeOperation}">
