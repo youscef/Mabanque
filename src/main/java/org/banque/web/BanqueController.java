@@ -9,8 +9,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
-import java.util.Optional;
 
 @Controller
 public class BanqueController {
@@ -22,12 +22,16 @@ public class BanqueController {
     }
 
     @GetMapping("/consulterCompte")
-    public String consulter(Model model, String codeCompte){
+    public String consulter(Model model, String codeCompte, @RequestParam(name = "page", defaultValue = "0") int page
+            , @RequestParam(name = "size", defaultValue = "5")  int size){
        try {
+
            Compte cp=iBanqueMetier.consulterCompte(codeCompte);
-           Page<Operation> pageOperation=iBanqueMetier.listeOperations(codeCompte,0,5);
+           Page<Operation> pageOperation=iBanqueMetier.listeOperations(codeCompte,page,size);
            model.addAttribute("listeOperation",pageOperation.getContent());
            model.addAttribute("compte",cp);
+           int [] pages=new int[pageOperation.getTotalPages()];
+           model.addAttribute("pages",pages);
        }catch (Exception e){
            model.addAttribute("exception",e);
        }
@@ -39,6 +43,7 @@ public class BanqueController {
             model.addAttribute("codeCompte",codeCompte);
             model.addAttribute("typeOperation",typeOperation);
             model.addAttribute("montant",montant);
+
             if(typeOperation.equals("Vers")){
                 iBanqueMetier.verser(codeCompte,montant);
             }
