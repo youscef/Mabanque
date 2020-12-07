@@ -66,21 +66,22 @@
                 <form th:action="@{/saveOperation}" method="post">
                     <div>
                         <label>Compte:</label>
-                        <input type="hidden" name="codeCompte" value="${codeCompte}"/>
+
                         <label th:text="${compte.codeCompte}"></label>
+                        <input type="hidden" name="codeCompte" th:value="${compte.codeCompte}"/>
                     </div>
                     <div>
                         <label>Retrait</label>
                         <input type="radio" name="typeOperation" value="Ret"
-                        onchange="document.getElementById('forVir').style.display='non'"/>
+                        />
                         <label>Versement</label>
                         <input type="radio" name="typeOperation" value="Vers"
-                               onchange="document.getElementById('forVir').style.display='non'"/>
+                               />
                         <label>Virement</label>
                         <input type="radio" name="typeOperation" value="Vir"
-                               onchange="document.getElementById('forVir').style.display='block'"/>
+                               />
                     </div>
-                  <div id="forVi" style="display:non">
+                  <div id="forVi" >
                         <label>Vers</label>
                         <input type="text" name="codeCompte2"/>
                     </div>
@@ -108,6 +109,7 @@
                         <th>Type operation</th>
                         <th>Date operation</th>
                         <th>montant</th>
+                        <th>solde actuel</th>
                     </tr>
                     </thead>
                     <tbody th:each="list :${listeOperation}">
@@ -116,6 +118,7 @@
                         <td th:text="${list.class.simpleName}"></td>
                         <td th:text="${list.dateOperation}"></td>
                         <td th:text="${list.montant}"></td>
+                        <td th:text="${compte.solde}"></td>
                     </tr>
 
 
