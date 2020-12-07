@@ -36,7 +36,9 @@ public class BanqueController {
     @PostMapping("/saveOperation")
     public String operation(Model model, String codeCompte, double montant, String typeOperation, String codeCompte2){
         try {
-model.addAttribute("codeCompte",codeCompte);
+            model.addAttribute("codeCompte",codeCompte);
+            model.addAttribute("typeOperation",typeOperation);
+            model.addAttribute("montant",montant);
             if(typeOperation.equals("Vers")){
                 iBanqueMetier.verser(codeCompte,montant);
             }
@@ -50,6 +52,8 @@ model.addAttribute("codeCompte",codeCompte);
         }catch (Exception e){
             model.addAttribute("exception",e);
         }
+        System.out.println(codeCompte);
+
         return "redirect:/consulterCompte?codeCompte="+codeCompte;
     }
 }
